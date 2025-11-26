@@ -143,7 +143,7 @@ public class LinkedList<T>{
         System.out.println("");
     }
     //==============================================================
-    public void LoadToFile ( String fileName)
+   /* public void LoadToFile ( String fileName)
     {
         
         try {
@@ -165,5 +165,5 @@ public class LinkedList<T>{
                      System.out.println(ex.getMessage());
         } 
 
-    }
+    }*/
 }

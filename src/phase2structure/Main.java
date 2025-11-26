@@ -11,31 +11,28 @@ import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class Main {
-
-    public static Scanner input = new Scanner(System.in);
     
-    public static CustomerManger cdata = new CustomerManger("Customers.csv");
-    public static LinkedList<Customers> customer;
     
-    public static productsManager pdata = new productsManager("prodcuts.csv");
-    public static LinkedList<Product> products;
+    public static Scanner input = new Scanner (System.in);
 
-    public static reviewsManager rdata = new reviewsManager("reviews.csv");
-    public static LinkedList<Review> reviews;
+    public static productsManager pdata  = new productsManager("prodcuts.csv");
+    public static AVLTree<Integer, Product>  products;
 
-    public static ordersManager odata = new ordersManager("orders.csv", cdata.getcustomersIDs());
+    public static customersManager cdata = new customersManager("customers.csv");
+    public  static AVLTree<Integer, Customer> customers;
+
+     public static ordersManager odata = new ordersManager("orders.csv" , cdata.getcustomersIDs());
      public static AVLTree<Integer, Order>  orders ;
 
+     public static reviewsManager rdata= new reviewsManager("reviews.csv", pdata.getproductsIDs());
+     public static LinkedList <Review>  reviews;
+ 
 
-
-
-
-
-    
+    /*
     // read data from files for all the 4 data structures
     public static void loadData() {
         System.out.println("Loading data...");
-        products = pdata.getProducts();
+        products = pdata.getproductsIDs();
         customer = cdata.getcustomersData();
         orders = odata.getordersData();
         reviews = rdata.getAllReviews();
@@ -95,7 +92,7 @@ public class Main {
         
 
     }
-
+*/
    
 //--------------------------
 
@@ -109,121 +106,205 @@ public class Main {
     System.out.println("4. Search product by ID");
     System.out.println("5. Search product by Name");
     System.out.println("6. Track all out-of-stock products");
-    System.out.println("7. Return to main menu");
+    System.out.println("7. List All Products Within a Price Range");
+    System.out.println("8. Return to main menu");
     System.out.println("Please enter your choice:");
 
-    try {
-        choice = input.nextInt();
-
-         while (true) {
-            if (choice == 1) {
-                pdata.addProduct();
-                break;
-            } else if (choice == 2) {
-                pdata.removeProduct(); // No product will be removed, stock will just be set to zero.
-                break;
-            } else if (choice == 3) {
-                pdata.updateProduct();
-                break;
-            } else if (choice == 4) {
-                Product pro = pdata.searchProducID();
-                if (pro != null) {
-                    System.out.println("Product found: " + pro);
-                } else {
-                    System.out.println("No product found with the given ID.");
-                }
-                break;
-            } else if (choice == 5) {
-               Product pro = pdata.searchProducName();
-                if (pro != null) {
-                    System.out.println("Product found: " + pro);
-                }
-                break;
-            }else if (choice == 6) {
-                pdata.Out_Of_Stock_Products();
-                break;
-            } else if (choice == 7) {
-                System.out.println("Returning to main menu...");
-                return;
-            } else {
-                System.out.println("Invalid choice! Please select a valid option between 1 and 6.");
-                break;
-            }
-        }
-    } catch (java.util.InputMismatchException e) {
-        System.out.println("Invalid input! Please enter a valid number.");
-        input.nextLine();  
-    }
-}
-
-
-//--------------------------
-    public static void ReviewsMenu() {
-    int choice;
-
-    
-    System.out.println("ــــــــــ Review Menu ــــــــ");
-    System.out.println("1. Add a new review");
-    System.out.println("2. Edit an existing review");
-    System.out.println("3. Get the average rating for a product");
-    System.out.println("4. Top 3 products");//by average rating
-    System.out.println("5. Common products with rating > 4");
-    System.out.println("6. Return to Main menu");
-    System.out.print("Enter your choice: ");
-
         try {
-
             choice = input.nextInt();
 
             while (true) {
                 if (choice == 1) {
-                    addReviewPrompt();
+                    pdata.addProduct();
                     break;
                 } else if (choice == 2) {
-                    rdata.updateReview();
+                    pdata.removeProduct(); // No product will be removed, stock will just be set to zero.
                     break;
                 } else if (choice == 3) {
-                    System.out.print("Enter product ID to get an average rating: ");
-                    int pid = input.nextInt();
-
-                    while (!pdata.checkProductID(pid)) {
-                        System.out.println("The product ID is invalid. Please try again:");
-                        pid = input.nextInt();
-                    }
-                    float AVG = avgRating(pid);
-                    System.out.println("The average rating for product ID " + pid + " is: " + AVG);
+                    pdata.updateProduct();
                     break;
                 } else if (choice == 4) {
-                    top3Products();
+                    Product pro = pdata.searchProducID();
+                    if (pro != null) {
+                        System.out.println("Product found: " + pro);
+                    } else {
+                        System.out.println("No product found with the given ID.");
+                    }
                     break;
                 } else if (choice == 5) {
 
-                    System.out.print("Enter the first customer's ID: ");
-                    Customers cid1 = cdata.getCustomersId();
-
-                    System.out.print("Enter the second customer's ID: ");
-                    Customers cid2 = cdata.getCustomersId();
-
-                    // both customers exist 
-                    commonProducts(cid1.getCustomerID(), cid2.getCustomerID());
+                    input.nextLine();
+                    Product pro = pdata.searchProducName();
+                    if (pro != null) {
+                        System.out.println("Product found: " + pro);
+                    }
                     break;
-                    
                 } else if (choice == 6) {
-                    System.out.println("Returning to Main menu...");
+                    pdata.Out_Of_Stock_Products();
                     break;
+                } else if (choice == 7) {
+                    double minPrice, maxPrice;
+
+                    do {
+                        System.out.println("Enter range :");
+                        System.out.print("minPrice : ");
+                        minPrice = input.nextDouble();
+                        System.out.print("maxPrice : ");
+                        maxPrice = input.nextDouble();
+
+                        if (minPrice >= maxPrice) {
+                            System.out.println("Re-enter range [minPrice less than maxPrice] :");
+                        }
+                    } while (minPrice >= maxPrice);
+
+                    LinkedList<Product> data = pdata.getPriceRange(minPrice, maxPrice);
+
+                    if (data.empty()) {
+                        System.out.println("No products in this range");
+                    } else {
+                        data.print();
+                    }
+
+                    break;
+
+                } else if (choice == 8) {
+                    System.out.println("Returning to main menu...");
+                    return;
                 } else {
-                    System.out.println("Invalid choice. Please try again.");
+                    System.out.println("Invalid choice! Please select a valid option between 1 and 8.");
                     break;
                 }
             }
         } catch (java.util.InputMismatchException e) {
             System.out.println("Invalid input! Please enter a valid number.");
-            input.nextLine();  // Clear the invalid input from the buffer
+            input.nextLine();
         }
     }
 
-//--------------------------
-    public static void addReviewPrompt() {
+
+    //=================================================================
+// REVIEWS MENU
+//=================================================================
+public static void ReviewsMenu() {
+    int choice;
+
+    System.out.println("ــــــــــ Review Menu ــــــــ");
+    System.out.println("1. Add a new review");
+    System.out.println("2. Edit an existing review");
+    System.out.println("3. Get the average rating for a product");
+    System.out.println("4. Top 3 Most Reviewed Products");
+    System.out.println("5. Top 3 Highest Rated Products");
+    System.out.println("6. Common products with rating > 4 between 2 customers");
+    System.out.println("7. Show all customers who reviewed a product (sorted)");
+    System.out.println("8. Return to Main menu");
+    System.out.print("Enter your choice: ");
+
+    try {
+        choice = input.nextInt();
+
+        while (true) {
+
+            if (choice == 1) {
+                addReviewPrompt();
+                break;
+            }
+
+            else if (choice == 2) {
+                rdata.updateReview();
+                break;
+            }
+
+            else if (choice == 3) {
+                System.out.print("Enter product ID to get an average rating: ");
+                int pid = input.nextInt();
+
+                while (!pdata.checkProductID(pid)) {
+                    System.out.println("The product ID is invalid. Please try again:");
+                    pid = input.nextInt();
+                }
+
+                float AVG = avgRating(pid);
+                System.out.println("The average rating for product ID " + pid + " is: " + AVG);
+                break;
+            }
+
+            else if (choice == 4) {
+                top3MostReviewedProducts();
+                break;
+            }
+
+            else if (choice == 5) {
+                top3HighestRatedProducts();
+                break;
+            }
+
+            else if (choice == 6) {
+                System.out.print("Enter the first customer's ID: ");
+                Customers cid1 = cdata.getCustomersId();
+
+                System.out.print("Enter the second customer's ID: ");
+                Customers cid2 = cdata.getCustomersId();
+
+                commonProducts(cid1.getCustomerID(), cid2.getCustomerID());
+                break;
+            }
+            else if (choice == 7) {
+                System.out.print("Enter product ID: ");
+                int pid = input.nextInt();
+
+                while (!pdata.checkProductID(pid)) {
+                    System.out.println("Invalid product ID. Try again:");
+                    pid = input.nextInt();
+                }
+
+                int sortChoice;
+
+                while (true) {
+                    System.out.println("Choose sorting type:");
+                    System.out.println("1. Sort by Rating");
+                    System.out.println("2. Sort by Customer ID");
+                    sortChoice = input.nextInt();
+
+                    if (sortChoice == 1 || sortChoice == 2) {
+                        break;
+                    }
+
+                    System.out.println("Invalid sorting choice. Please enter 1 or 2.");
+                }
+
+                if (sortChoice == 1) {
+                    showCustomersForProductByRating(pid);
+                } else {
+                    showCustomersForProductByCustomerID(pid);
+                }
+                break;
+            }
+
+
+
+            else if (choice == 8) {
+                System.out.println("Returning to Main menu...");
+                break;
+            }
+
+            else {
+                System.out.println("Invalid choice. Please try again.");
+                break;
+            }
+        }
+
+    } catch (java.util.InputMismatchException e) {
+        System.out.println("Invalid input! Please enter a valid number.");
+        input.nextLine();
+    }
+}
+
+
+
+//=================================================================
+// 1) ADD NEW REVIEW
+//=================================================================
+public static void addReviewPrompt() {
         System.out.print("Enter the Customer ID: ");
         int customerId = input.nextInt();
         while (cdata.check(customerId)) {// updated (check)
@@ -243,7 +324,12 @@ public class Main {
                 + " by Customer " + review.getCustomer() + " with Rating: " + review.getRating() + " and Comment: " + review.getComment());
     }
 
-    public static float avgRating(int productId) {
+
+
+//=================================================================
+// 2) AVERAGE RATING FOR PRODUCT
+//=================================================================
+public static float avgRating(int productId) {
         int reviewCount = 0;
         float totalRating = 0;
 
@@ -268,28 +354,93 @@ public class Main {
         return (totalRating / reviewCount);
     }
 
-    public static void top3Products() {
-        LinkedPQ<Product> top3 = new LinkedPQ<Product>();
 
-        if (!products.empty()) {
-            products.findFirst();
-            for (int i = 0; i < products.size(); i++) {
-                Product product = products.retrieve();
-                float avgRating = avgRating(product.getProductId());
-                top3.enqueue(product, avgRating);
-                products.findNext();
-            }
-        }
 
-        System.out.println("Top 3 products by average rating:");
-        for (int j = 1; j <= 3 && top3.length() > 0; j++) {
-            PQElement<Product> top = top3.serve();
-            System.out.println("Product " + j + " - ID: " + top.data.getProductId() + " | " + top.data.getName()
-                    + " | Avg Rating: " + top.priority);
-        }
+//=================================================================
+// 3) TOP 3 MOST REVIEWED PRODUCTS
+//=================================================================
+public static void top3MostReviewedProducts() {
+
+    LinkedPQ<Product> pq = new LinkedPQ<Product>();
+    LinkedList<Product> allProducts = products.inOrdertraverseData();
+
+    if (allProducts.empty()) {
+        System.out.println("No products available.");
+        return;
     }
 
-    public static void commonProducts(int cid1, int cid2) {
+    allProducts.findFirst();
+    while (true) {
+
+        Product p = allProducts.retrieve();
+        int reviewCount = 0;
+
+        reviews.findFirst();
+        while (true) {
+            if (reviews.retrieve().getProduct() == p.getProductId())
+                reviewCount++;
+
+            if (reviews.last()) break;
+            reviews.findNext();
+        }
+
+        if (reviewCount > 0)
+            pq.enqueue(p, reviewCount);
+
+        if (allProducts.last()) break;
+        allProducts.findNext();
+    }
+
+    System.out.println("Top 3 Most Reviewed Products:");
+    for (int i = 1; i <= 3 && pq.length() > 0; i++) {
+        PQElement<Product> top = pq.serve();
+        System.out.println("Product " + i + " - ID: " + top.data.getProductId()
+                + " | " + top.data.getName()
+                + " | Reviews: " + top.priority);
+    }
+}
+
+
+
+//=================================================================
+// 4) TOP 3 BY AVERAGE RATING
+//=================================================================
+public static void top3HighestRatedProducts() {
+
+    LinkedPQ<Product> pq = new LinkedPQ<Product>();
+    LinkedList<Product> allProducts = products.inOrdertraverseData();
+
+    if (allProducts.empty()) {
+        System.out.println("No products available.");
+        return;
+    }
+
+    allProducts.findFirst();
+    while (true) {
+        Product p = allProducts.retrieve();
+        float avg = avgRating(p.getProductId());
+        if (avg > 0)
+            pq.enqueue(p, avg);
+
+        if (allProducts.last()) break;
+        allProducts.findNext();
+    }
+
+    System.out.println("Top 3 Highest Rated Products:");
+    for (int i = 1; i <= 3 && pq.length() > 0; i++) {
+        PQElement<Product> top = pq.serve();
+        System.out.println("Product " + i + " - ID: " + top.data.getProductId()
+                + " | " + top.data.getName()
+                + " | Avg Rating: " + top.priority);
+    }
+}
+
+
+
+//=================================================================
+// 5) COMMON PRODUCTS WITH AVG RATING ≥ 4
+//=================================================================
+public static void commonProducts(int cid1, int cid2) {
         LinkedList<Integer> customer1Products = new LinkedList<Integer>();
         LinkedList<Integer> customer2Products = new LinkedList<Integer>();
         
@@ -346,6 +497,83 @@ public class Main {
             System.out.println("No common products with a rating greater than 4 between the two customers.");
         }
     }
+
+
+//=================================================================
+// SHOW ALL CUSTOMERS WHO REVIEWED A PRODUCT — SORTED BY RATING
+//=================================================================
+public static void showCustomersForProductByRating(int pid) {
+
+    if (reviews.empty()) {
+        System.out.println("No reviews available.");
+        return;
+    }
+
+    LinkedPQ<Review> pq = new LinkedPQ<Review>();
+
+    reviews.findFirst();
+    while (true) {
+        Review r = reviews.retrieve();
+        if (r.getProduct() == pid) {
+            pq.enqueue(r, r.getRating());  // priority = rating
+        }
+        if (reviews.last()) break;
+        reviews.findNext();
+    }
+
+    if (pq.length() == 0) {
+        System.out.println("No reviews found for this product.");
+        return;
+    }
+
+    System.out.println("Customers who reviewed product (" + pid + ") sorted by RATING:");
+    while (pq.length() > 0) {
+        PQElement<Review> rr = pq.serve();
+        Review r = rr.data;
+
+        System.out.println("Customer ID: " + r.getCustomer()
+                + " | Rating: " + r.getRating()
+                + " | Comment: " + r.getComment());
+    }
+}
+ 
+//=================================================================
+// SHOW ALL CUSTOMERS WHO REVIEWED A PRODUCT — SORTED BY CUSTOMER ID
+//=================================================================
+public static void showCustomersForProductByCustomerID(int pid) {
+
+    if (reviews.empty()) {
+        System.out.println("No reviews available.");
+        return;
+    }
+
+    LinkedPQ<Review> pq = new LinkedPQ<Review>();
+
+    reviews.findFirst();
+    while (true) {
+        Review r = reviews.retrieve();
+        if (r.getProduct() == pid) {
+            pq.enqueue(r, r.getCustomer());  // priority = customer ID
+        }
+        if (reviews.last()) break;
+        reviews.findNext();
+    }
+
+    if (pq.length() == 0) {
+        System.out.println("No reviews found for this product.");
+        return;
+    }
+
+    System.out.println("Customers who reviewed product (" + pid + ") sorted by CUSTOMER ID:");
+    while (pq.length() > 0) {
+        PQElement<Review> rr = pq.serve();
+        Review r = rr.data;
+
+        System.out.println("Customer ID: " + r.getCustomer()
+                + " | Rating: " + r.getRating()
+                + " | Comment: " + r.getComment());
+    }
+}
 
 
     public static void OrdersMenu() {

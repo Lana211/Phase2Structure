@@ -528,7 +528,7 @@ public class AVLTree<K extends Comparable<K>, T>{
     }   
     
     //==============================================================
-    public void LoadToFile ( String fileName)
+    /*public void LoadToFile ( String fileName)
     {
         
         try {
@@ -540,8 +540,8 @@ public class AVLTree<K extends Comparable<K>, T>{
                      System.out.println(ex.getMessage());
         } 
 
-    }
-    private void private_LoadToFile ( FileWriter myWriter,  AVLNode <K, T>  node) throws IOException
+    }*/
+    /*private void private_LoadToFile ( FileWriter myWriter,  AVLNode <K, T>  node) throws IOException
     {
         if ( node == null)
             return;
@@ -554,5 +554,5 @@ public class AVLTree<K extends Comparable<K>, T>{
             myWriter.write(((Product) node.data).getDataToFile() +"\n");
         private_LoadToFile ( myWriter,  node.right);
         
-    }    
+    }   */ 
 }
