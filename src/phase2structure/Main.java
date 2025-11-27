@@ -240,10 +240,10 @@ public static void ReviewsMenu() {
 
             else if (choice == 6) {
                 System.out.print("Enter the first customer's ID: ");
-                Customers cid1 = cdata.getCustomersId();
+                Customer cid1 = cdata.getCustomersId();
 
                 System.out.print("Enter the second customer's ID: ");
-                Customers cid2 = cdata.getCustomersId();
+                Customer cid2 = cdata.getCustomersId();
 
                 commonProducts(cid1.getCustomerID(), cid2.getCustomerID());
                 break;
@@ -936,7 +936,7 @@ public static LinkedList<Review> allCustomereviews(){
 //-------------------------
   public static void main(String[] args) {
     
-    loadData();
+    //loadData();
     
     int choice = 0;
     
