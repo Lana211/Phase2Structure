@@ -14,6 +14,7 @@ public class customersManager {
    
     public static Scanner input = new Scanner(System.in);
     public static AVLTree<Integer,Customer> customer = new AVLTree<Integer,Customer>();
+    //list by name
    public static AVLTree<String, Customer> customersName = new AVLTree<String, Customer> ();
     public customersManager(String readFile) {
         try {
