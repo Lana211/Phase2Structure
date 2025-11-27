@@ -850,9 +850,12 @@ private static void findOrdersInDateRange() {
     
     System.out.println("ــــــــــ Customers Menu ــــــــ");
     System.out.println("1. Register new customer");
-    System.out.println("2. Place a new order");
-    System.out.println("3. View order history");
-    System.out.println("4. View customer reviews");
+    System.out.println("2. Search for customer by ID");
+    System.out.println("3. Place a new order");
+    System.out.println("4. View order history");
+    System.out.println("5. View customer reviews");
+    System.out.println("6.Display All Customer Ordered by name");
+    System.out.println("7.Display All Customer Ordered by ID");
     System.out.println("5. Return to Main Menu");
     System.out.print("Enter your choice: ");
 
@@ -865,15 +868,24 @@ private static void findOrdersInDateRange() {
                cdata.RegisterNewCustomer();
                 break;
             } else if (choice == 2) {
+               cdata. getCustomersId();
+                break;
+             } else if (choice == 3) {
                 placeNewOrder();
                 break;
-            } else if (choice == 3) {
+            } else if (choice == 4) {
              cdata.Ohistory ();
                 break;
-                } else if (choice == 4) {
+                } else if (choice == 5) {
             allCustomereviews();
                 break;
-            } else if (choice == 5) {
+            } else if (choice == 6) {
+               cdata.ListCustomerByName();
+                break;
+            } else if (choice == 7) {
+                cdata.ListCustomerByID();
+                break;
+                 } else if (choice == 8) {
                 System.out.println("Returning to Main menu...");
                 break;
             } else {

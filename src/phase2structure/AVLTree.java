@@ -128,6 +128,7 @@ public class AVLTree<K extends Comparable<K>, T>{
                     else
                          return searchTreeHelper(node.right, key);
         }
+
         
         // update the balance factor the node
         private void updateBalance(AVLNode<K,T> node) {
@@ -223,6 +224,7 @@ public class AVLTree<K extends Comparable<K>, T>{
                 x.bf = x.bf + 1 - Math.min(0, y.bf);
                 y.bf = y.bf + 1 + Math.max(0, x.bf);
         }
+        
 
         
         
@@ -328,7 +330,18 @@ public class AVLTree<K extends Comparable<K>, T>{
         } // end while (p != null) 
         return false;
     }
+    
+public void displayAll() {
+    displayInOrder(root);
+}
 
+private void displayInOrder( AVLNode node) {
+    if (node != null) {
+        displayInOrder(node.left);
+        System.out.println(node.data);
+        displayInOrder(node.right);
+    }
+}
     //==============================================================
     // return string all data of the tree inorder traversal
     //==============================================================
@@ -448,6 +461,8 @@ public class AVLTree<K extends Comparable<K>, T>{
             
          }
     }   
+    
+    
     
     //==============================================================
     // search for interval orders between two dates
