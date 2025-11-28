@@ -881,7 +881,7 @@ public static LinkedList<Review> allCustomereviews(){
 //-------------------------
   public static void main(String[] args) {
     
-    loadData();
+    //loadData();
     
     int choice = 0;
     
