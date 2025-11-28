@@ -555,7 +555,7 @@ private void displayInOrder( AVLNode node) {
                      System.out.println(ex.getMessage());
         } 
 
-    }*/
+    }
     /*private void private_LoadToFile ( FileWriter myWriter,  AVLNode <K, T>  node) throws IOException
     {
         if ( node == null)

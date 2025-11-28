@@ -8,6 +8,7 @@ package phase2structure;
 import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Scanner;
 
 public class Main {
@@ -21,79 +22,23 @@ public class Main {
     public static customersManager cdata = new customersManager("customers.csv");
     public  static AVLTree<Integer, Customer> customers;
 
-     public static ordersManager odata = new ordersManager("orders.csv" , cdata.getcustomersIDs());
+     public static ordersManager odata = new ordersManager("orders.csv" , cdata.getCustomer());
      public static AVLTree<Integer, Order>  orders ;
 
      public static reviewsManager rdata= new reviewsManager("reviews.csv", pdata.getproductsIDs());
      public static LinkedList <Review>  reviews;
  
 
-    /*
-    // read data from files for all the 4 data structures
+    
+    //ead data from files for all the 4 data structures
     public static void loadData() {
         System.out.println("Loading data...");
         products = pdata.getproductsIDs();
-        customer = cdata.getcustomersData();
+        customers = cdata.getCustomer();
         orders = odata.getordersData();
         reviews = rdata.getAllReviews();
-
-        // add reviews to products
-        if (!products.empty() && !reviews.empty()) {
-            products.findFirst();
-            for (int i = 0; i < products.size(); i++) {
-
-                reviews.findFirst();
-                for (int j = 0; j < reviews.size(); j++) {
-
-                    if (products.retrieve().getProductId() == reviews.retrieve().getProduct()) {
-
-                        int rid = reviews.retrieve().getReviewId();
-                        products.retrieve().addReview(rid);
-                    }
-
-                    reviews.findNext();
-                }
-
-                products.findNext();
-            }
-        } else {
-            System.out.println("No products or reviews available.");
-        }
-
-               if( !customer.empty()){
-        customer.findFirst();
-        while(!customer.last()){
-            
-             orders.findFirst();
-        while(!orders.last()){
-            if(customer.retrieve().getCustomerID()==orders.retrieve().getCustomerRef()){
-                customer.retrieve().PlaceNew( orders.retrieve().getoId());}
-            orders.findNext();
-        }
-        if(customer.retrieve().getCustomerID()==orders.retrieve().getCustomerRef())
-                customer.retrieve().PlaceNew( orders.retrieve().getoId());
         
-        customer.findNext();
-            }
-        //check the last elemeint in 
-        if(!customer.empty()){
-            orders.findFirst();
-        while(!orders.last()){
-            if(customer.retrieve().getCustomerID()==orders.retrieve().getCustomerRef()){
-                customer.retrieve().PlaceNew( orders.retrieve().getoId());}
-            orders.findNext();
-        }
-        }
-        }
-
-
-
-
-        
-
-    }
-*/
-   
+        } 
 //--------------------------
 
    public static void productsMenu() {
@@ -240,10 +185,10 @@ public static void ReviewsMenu() {
 
             else if (choice == 6) {
                 System.out.print("Enter the first customer's ID: ");
-                Customers cid1 = cdata.getCustomersId();
+                Customer cid1 = cdata.getCustomersId();
 
                 System.out.print("Enter the second customer's ID: ");
-                Customers cid2 = cdata.getCustomersId();
+                Customer cid2 = cdata.getCustomersId();
 
                 commonProducts(cid1.getCustomerID(), cid2.getCustomerID());
                 break;
@@ -658,10 +603,10 @@ private static void cancelAnOrder() {
     if (result == 1) {
         // تحديث العميل - استخدام AVL Tree
         int customerID = orderToCancel.getCustomerRef();
-        if (cdata.getCustomersData().find(customerID)) {
-            Customers c = cdata.getCustomersData().retrieve();
+        if (cdata.getCustomer().find(customerID)) {
+            Customer c = cdata.getCustomer().retrieve();
             c.removeOrder(orderToCancel.getoId());
-            cdata.getCustomersData().update(c);  // ← update
+            cdata.getCustomer().update(c);  // ← update
         }
         
         // تحديث المخزون - استخدام inOrdertraverseData
@@ -672,10 +617,10 @@ private static void cancelAnOrder() {
             while (!productList.last()) {
                 int productId = productList.retrieve();
                 
-                if (pdata.getProductsData().find(productId)) {
-                    Product p = pdata.getProductsData().retrieve();
+                if (pdata.getproductsIDs() .find(productId)) {
+                    Product p = pdata.getproductsIDs() .retrieve();
                     p.addStock(1);
-                    pdata.getProductsData().update(p);
+                    pdata.getproductsIDs() .update(p);
                 }
                 
                 productList.findNext();
@@ -683,10 +628,10 @@ private static void cancelAnOrder() {
             
             // العنصر الأخير
             int lastProductId = productList.retrieve();
-            if (pdata.getProductsData().find(lastProductId)) {
-                Product p = pdata.getProductsData().retrieve();
+            if (pdata.getproductsIDs() .find(lastProductId)) {
+                Product p = pdata.getproductsIDs() .retrieve();
                 p.addStock(1);
-                pdata.getProductsData().update(p);
+                pdata.getproductsIDs() .update(p);
             }
         }
         
@@ -711,7 +656,7 @@ public static void placeNewOrder() {
     System.out.print("Customer ID: ");
     int customerId = input.nextInt();
     
-    while (!cdata.getCustomersData().find(customerId)) {
+    while (cdata.check(customerId)) {
         System.out.print("Customer doesn't exist, re-enter: ");
         customerId = input.nextInt();
     }
@@ -725,13 +670,13 @@ public static void placeNewOrder() {
         
         // التحقق من المنتج
         while (true) {
-            if (!pdata.getProductsData().find(productId)) {
+            if (!pdata.getproductsIDs() .find(productId)) {
                 System.out.print("Invalid Product ID. Enter again: ");
                 productId = input.nextInt();
                 continue;
             }
             
-            Product p = pdata.getProductsData().retrieve();
+            Product p = pdata.getproductsIDs() .retrieve();
             if (p.getStock() == 0) {
                 System.out.println("This product is out of stock!");
                 System.out.print("Enter another Product ID: ");
@@ -743,12 +688,12 @@ public static void placeNewOrder() {
         }
         
         // إضافة المنتج
-        if (pdata.getProductsData().find(productId)) {
-            Product p = pdata.getProductsData().retrieve();
+        if (pdata.getproductsIDs() .find(productId)) {
+            Product p = pdata.getproductsIDs() .retrieve();
             
             if (p.getStock() > 0) {
                 p.setStock(p.getStock() - 1);
-                pdata.getProductsData().update(p);  // ← update
+                pdata.getproductsIDs() .update(p);  // ← update
                 
                 newOrder.addProduct(productId);
                 totalAmount += p.getPrice();
@@ -792,10 +737,10 @@ public static void placeNewOrder() {
     odata.getordersData().insert(id, newOrder);
     
     // تحديث العميل
-    if (cdata.getCustomersData().find(customerId)) {
-        Customers c = cdata.getCustomersData().retrieve();
+    if (!cdata.check(customerId)) {
+        Customer c = cdata.getCustomer().retrieve();
         c.PlaceNew(id);
-        cdata.getCustomersData().update(c);  // ← update
+        cdata.getCustomer().update(c);  // ← update
     }
     
     System.out.println("\nOrder added successfully");

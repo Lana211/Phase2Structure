@@ -78,6 +78,11 @@ public class Customer{
     public AVLTree<Integer , Integer> getOrder() {
         return order;
     }
+
+    @Override
+    public String toString() {
+        return "Customer{" + "customerID=" + customerID + ", name=" + name + ", Email=" + Email  + '}';
+    }
     
     
 }

@@ -34,11 +34,7 @@ public class customersManager {
             System.out.print(ex.getMessage());
         }
     }
-    public AVLTree<Integer,Customer> getcustomersData( )
-    {
-        return customer ;
-    
-    }
+  
    public void RegisterNewCustomer(){
         Customer customers =new Customer();
  
@@ -123,9 +119,9 @@ customers.setCustomerID(customerID);
         System.out.println("No customers available");
         return null;
     }
-
+ System.out.println("enter customer ID");
     while (true) {
-        
+       
         int customerID = input.nextInt();
          
             if (customer.find(customerID)) {
@@ -142,6 +138,15 @@ customers.setCustomerID(customerID);
         
        
 }
+
+    public static AVLTree<Integer, Customer> getCustomer() {
+        return customer;
+    }
+
+    public static AVLTree<String, Customer> getCustomersName() {
+        return customersName;
+    }
+   
 
 
 }

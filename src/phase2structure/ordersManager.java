@@ -7,6 +7,7 @@ package phase2structure;
 import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Scanner;
 public class ordersManager {
     
@@ -50,7 +51,7 @@ public class ordersManager {
                 if (customers.find(cid))
                     {
                         Customer c = customers.retrieve();
-                        c.addOrder(oid);
+                        c.PlaceNew(oid);
                         customers.update(c);
                     }
             }
