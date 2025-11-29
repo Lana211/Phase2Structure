@@ -9,7 +9,7 @@ import java.io.IOException;
 
 /**
  *
- * @author Manal Alhihi
+
  * @param <T>
  */
 public class LinkedList<T>{
