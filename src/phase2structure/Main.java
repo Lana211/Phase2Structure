@@ -39,6 +39,20 @@ public class Main {
         reviews = rdata.getAllReviews();
         
         } 
+    
+    
+    public static int readInt(String msg) {
+    while (true) {
+        System.out.print(msg);
+        try {
+            return input.nextInt();
+        } catch (java.util.InputMismatchException e) {
+            System.out.println("Invalid input! Please enter a valid number.");
+            input.nextLine();  
+        }
+    }
+}
+
 //--------------------------
 
    public static void productsMenu() {
@@ -78,7 +92,7 @@ public class Main {
                     break;
                 } else if (choice == 5) {
 
-                    input.nextLine();
+                    //input.nextLine();
                     Product pro = pdata.searchProducName();
                     if (pro != null) {
                         System.out.println("Product found: " + pro);
@@ -131,116 +145,93 @@ public class Main {
 // REVIEWS MENU
 //=================================================================
 public static void ReviewsMenu() {
-    int choice;
 
-    System.out.println("ــــــــــ Review Menu ــــــــ");
-    System.out.println("1. Add a new review");
-    System.out.println("2. Edit an existing review");
-    System.out.println("3. Get the average rating for a product");
-    System.out.println("4. Top 3 Most Reviewed Products");
-    System.out.println("5. Top 3 Highest Rated Products");
-    System.out.println("6. Common products with rating > 4 between 2 customers");
-    System.out.println("7. Show all customers who reviewed a product (sorted)");
-    System.out.println("8. Return to Main menu");
-    System.out.print("Enter your choice: ");
+    while (true) {
+        System.out.println("ــــــــــ Review Menu ــــــــ");
+        System.out.println("1. Add a new review");
+        System.out.println("2. Edit an existing review");
+        System.out.println("3. Get the average rating for a product");
+        System.out.println("4. Top 3 Most Reviewed Products");
+        System.out.println("5. Top 3 Highest Rated Products");
+        System.out.println("6. Common products with rating > 4 between 2 customers");
+        System.out.println("7. Show all customers who reviewed a product (sorted)");
+        System.out.println("8. Return to Main menu");
 
-    try {
-        choice = input.nextInt();
+        int choice = readInt("Enter your choice: "); // 
 
-        while (true) {
+        if (choice == 1) {
+            addReviewPrompt();
+            break;
 
-            if (choice == 1) {
-                addReviewPrompt();
-                break;
+        } else if (choice == 2) {
+            rdata.updateReview();
+            break;
+
+        } else if (choice == 3) {
+            int pid = readInt("Enter product ID to get an average rating: ");
+
+            while (!pdata.checkProductID(pid)) {
+                System.out.println("The product ID is invalid. Please try again:");
+                pid = readInt("Enter product ID: ");
             }
 
-            else if (choice == 2) {
-                rdata.updateReview();
-                break;
+            float AVG = avgRating(pid);
+            System.out.println("The average rating for product ID " + pid + " is: " + AVG);
+            break;
+
+        } else if (choice == 4) {
+            top3MostReviewedProducts();
+            break;
+
+        } else if (choice == 5) {
+            top3HighestRatedProducts();
+            break;
+
+        } else if (choice == 6) {
+            System.out.print("Enter the first customer's ID: ");
+            Customer cid1 = cdata.getCustomersId();
+
+            System.out.print("Enter the second customer's ID: ");
+            Customer cid2 = cdata.getCustomersId();
+
+            commonProducts(cid1.getCustomerID(), cid2.getCustomerID());
+            break;
+
+        } else if (choice == 7) {
+            int pid = readInt("Enter product ID: ");
+
+            while (!pdata.checkProductID(pid)) {
+                System.out.println("Invalid product ID. Try again:");
+                pid = readInt("Enter product ID: ");
             }
 
-            else if (choice == 3) {
-                System.out.print("Enter product ID to get an average rating: ");
-                int pid = input.nextInt();
+            int sortChoice;
+            while (true) {
+                System.out.println("Choose sorting type:");
+                System.out.println("1. Sort by Rating");
+                System.out.println("2. Sort by Customer ID");
+                sortChoice = readInt("Your choice: ");
 
-                while (!pdata.checkProductID(pid)) {
-                    System.out.println("The product ID is invalid. Please try again:");
-                    pid = input.nextInt();
-                }
+                if (sortChoice == 1 || sortChoice == 2)
+                    break;
 
-                float AVG = avgRating(pid);
-                System.out.println("The average rating for product ID " + pid + " is: " + AVG);
-                break;
+                System.out.println("Invalid sorting choice. Please enter 1 or 2.");
             }
 
-            else if (choice == 4) {
-                top3MostReviewedProducts();
-                break;
+            if (sortChoice == 1) {
+                showCustomersForProductByRating(pid);
+            } else {
+                showCustomersForProductByCustomerID(pid);
             }
+            break;
 
-            else if (choice == 5) {
-                top3HighestRatedProducts();
-                break;
-            }
+        } else if (choice == 8) {
+            System.out.println("Returning to Main menu...");
+            break;
 
-            else if (choice == 6) {
-                System.out.print("Enter the first customer's ID: ");
-                Customer cid1 = cdata.getCustomersId();
-
-                System.out.print("Enter the second customer's ID: ");
-                Customer cid2 = cdata.getCustomersId();
-
-                commonProducts(cid1.getCustomerID(), cid2.getCustomerID());
-                break;
-            }
-            else if (choice == 7) {
-                System.out.print("Enter product ID: ");
-                int pid = input.nextInt();
-
-                while (!pdata.checkProductID(pid)) {
-                    System.out.println("Invalid product ID. Try again:");
-                    pid = input.nextInt();
-                }
-
-                int sortChoice;
-
-                while (true) {
-                    System.out.println("Choose sorting type:");
-                    System.out.println("1. Sort by Rating");
-                    System.out.println("2. Sort by Customer ID");
-                    sortChoice = input.nextInt();
-
-                    if (sortChoice == 1 || sortChoice == 2) {
-                        break;
-                    }
-
-                    System.out.println("Invalid sorting choice. Please enter 1 or 2.");
-                }
-
-                if (sortChoice == 1) {
-                    showCustomersForProductByRating(pid);
-                } else {
-                    showCustomersForProductByCustomerID(pid);
-                }
-                break;
-            }
-
-
-
-            else if (choice == 8) {
-                System.out.println("Returning to Main menu...");
-                break;
-            }
-
-            else {
-                System.out.println("Invalid choice. Please try again.");
-                break;
-            }
+        } else {
+            System.out.println("Invalid choice. Please try again.");
         }
-
-    } catch (java.util.InputMismatchException e) {
-        System.out.println("Invalid input! Please enter a valid number.");
-        input.nextLine();
     }
 }
 
@@ -250,24 +241,24 @@ public static void ReviewsMenu() {
 // 1) ADD NEW REVIEW
 //=================================================================
 public static void addReviewPrompt() {
-        System.out.print("Enter the Customer ID: ");
-        int customerId = input.nextInt();
-        while (cdata.check(customerId)) {// updated (check)
-            System.out.println("Customer ID not available. Please enter again:");
-            customerId = input.nextInt();
-        }
-
-        System.out.print("Enter the Product ID: ");
-        int productId = input.nextInt();
-        while (!pdata.checkProductID(productId)) {
-            System.out.println("Product ID not available. Please enter again:");
-            productId = input.nextInt();
-        }
-
-        Review review = rdata.addNewReview(customerId, productId);
-        System.out.println("Review (ID: " + review.getReviewId() + ") added successfully for Product " + review.getProduct()
-                + " by Customer " + review.getCustomer() + " with Rating: " + review.getRating() + " and Comment: " + review.getComment());
+    int customerId = readInt("Enter the Customer ID: ");
+    while (cdata.check(customerId)) { 
+        System.out.println("Customer ID not available. Please enter again:");
+        customerId = readInt("Enter the Customer ID: ");
     }
+
+    int productId = readInt("Enter the Product ID: ");
+    while (!pdata.checkProductID(productId)) {
+        System.out.println("Product ID not available. Please enter again:");
+        productId = readInt("Enter the Product ID: ");
+    }
+
+    Review review = rdata.addNewReview(customerId, productId);
+    System.out.println("Review (ID: " + review.getReviewId() + ") added successfully for Product "
+            + review.getProduct() + " by Customer " + review.getCustomer()
+            + " with Rating: " + review.getRating() + " and Comment: " + review.getComment());
+}
+
 
 
 
@@ -881,48 +872,43 @@ public static LinkedList<Review> allCustomereviews(){
 //-------------------------
   public static void main(String[] args) {
     
-    //loadData();
+    loadData();
     
     int choice = 0;
-    
-    do {
-        try {
-            System.out.println("ـــــــــــــ");
-            System.out.println("1. Products");
-            System.out.println("2. Customers");
-            System.out.println("3. Orders");
-            System.out.println("4. Reviews");
-            System.out.println("5. Exit");
-            System.out.println("Enter your choice:");
-            choice = input.nextInt();
-            
-            switch (choice) {
-                case 1:
-                    productsMenu();  
-                    break;
-                case 2:
-                    CustomersMenu();  
-                    break;
-                case 3:
-                    OrdersMenu();  
-                    break;
-                case 4:
-                    ReviewsMenu();  
-                    break;
-                case 5:
-                    System.out.println("Exiting... Goodbye!");
-                    break;  
-                default:
-                    System.out.println("Bad choice, Try again");
-            }
-            
-        } catch (java.util.InputMismatchException e) {
+   
+
+do {
+    System.out.println("ـــــــــــــ");
+    System.out.println("1. Products");
+    System.out.println("2. Customers");
+    System.out.println("3. Orders");
+    System.out.println("4. Reviews");
+    System.out.println("5. Exit");
+
+    choice = readInt("Enter your choice: "); 
+
+    switch (choice) {
+        case 1:
+            productsMenu();
+            break;
+        case 2:
+            CustomersMenu();
+            break;
+        case 3:
+            OrdersMenu();
+            break;
+        case 4:
+            ReviewsMenu();
+            break;
+        case 5:
+            System.out.println("Exiting... Goodbye!");
+            break;
+        default:
             System.out.println("Invalid input! Please enter a number between 1-5.");
-            input.nextLine();  
-            choice = 0;  
-        }
-        
-    } while (choice != 5);
+    }
+
+} while (choice != 5);
+
 }
   }
 

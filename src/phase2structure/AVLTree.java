@@ -346,12 +346,26 @@ private void displayInOrder( AVLNode node) {
     // return string all data of the tree inorder traversal
     //==============================================================
     
-    @Override
-    public String toString() {
-        String str = inOrdersTraversal(root );
-        str = str.replace(str.substring(str.length()-2), "");
-        return "{" + str + "}";
+   //==============================================================
+// return string all data of the tree inorder traversal
+//==============================================================
+@Override
+public String toString() {
+    String str = inOrdersTraversal(root);  
+
+    if (str == null || str.isEmpty()) {
+      
+        return "{}";
     }
+
+   
+    if (str.length() >= 2) {
+        str = str.substring(0, str.length() - 2);
+    }
+
+    return "{" + str + "}";
+}
+
 
     private String inOrdersTraversal(AVLNode<K, T>  node)
     {
@@ -497,25 +511,46 @@ private void displayInOrder( AVLNode node) {
          }
     }   
     //==============================================================
-    // find all products out of stock in order traversal
-    //==============================================================
-    public void inOrdertraverseOutStock() {
-        System.out.println("Products out of stock");
-        System.out.println("====================");
-        if (( root != null) && ( root.data instanceof Product))
-            private_inOrdertraverseOutStock( root);
+// print all products that are out of stock (in-order traversal)
+//==============================================================
+public void inOrdertraverseOutStock() {
+
+    if (root == null) {
+        System.out.println("No products out of stock.");
+        return;
     }
 
-    private void  private_inOrdertraverseOutStock(AVLNode<K, T>  node)
-    {
-        if (node == null)
-            return ;
-        private_inOrdertraverseOutStock(node.left);
-        if (node.data instanceof Product);
-            if ( ((Product)node.data).getStock() == 0)
-                System.out.println(node.data);
-        private_inOrdertraverseOutStock(node.right);
+    int count = private_inOrdertraverseOutStock(root, 0);
+
+    if (count == 0) {
+        System.out.println("No products out of stock.");
+    } else {
+        System.out.println("-------------------------------------------");
+        System.out.println("Total out-of-stock products: " + count);
     }
+}
+
+
+private int private_inOrdertraverseOutStock(AVLNode<K, T> node, int count) {
+    if (node == null)
+        return count;
+
+    // left
+    count = private_inOrdertraverseOutStock(node.left, count);
+
+    // visit current node
+    Product p = (Product) node.data;   
+    if (p.getStock() == 0) {
+        System.out.println(p);         
+        count++;
+    }
+
+    // right
+    count = private_inOrdertraverseOutStock(node.right, count);
+
+    return count;
+}
+
     //==============================================================
     // search for interval between two data price k1 , and k2
     //==============================================================

@@ -119,13 +119,13 @@ customers.setCustomerID(customerID);
         System.out.println("No customers available");
         return null;
     }
- System.out.println("enter customer ID");
+ //System.out.println("enter customer ID");
     while (true) {
        
         int customerID = input.nextInt();
          
             if (customer.find(customerID)) {
-                System.out.println(customer.retrieve());
+               // System.out.println(customer.retrieve());
                 return customer.retrieve();
             }
 
