@@ -4,11 +4,10 @@
  */
 package phase2structure;
 
-
+//s3
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-//la3
 public class Order {
     int oId;
     int customerRef;

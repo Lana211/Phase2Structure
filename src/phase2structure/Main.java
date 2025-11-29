@@ -561,7 +561,7 @@ public static void showCustomersForProductByCustomerID(int pid) {
     }
 }
 
-// ✅ صح
+
 private static void searchForOrder() {
     System.out.print("\nEnter Order ID: ");
     int orderId = input.nextInt();
@@ -576,7 +576,7 @@ private static void searchForOrder() {
     }
 }
 
-// ✅ المصحح للـ AVL Tree
+
 private static void cancelAnOrder() {
     System.out.print("\nOrder ID to cancel: ");
     int orderID = input.nextInt();
@@ -592,15 +592,14 @@ private static void cancelAnOrder() {
     int result = odata.cancelOrder(orderID);
     
     if (result == 1) {
-        // تحديث العميل - استخدام AVL Tree
+    
         int customerID = orderToCancel.getCustomerRef();
         if (cdata.getCustomer().find(customerID)) {
             Customer c = cdata.getCustomer().retrieve();
             c.removeOrder(orderToCancel.getoId());
-            cdata.getCustomer().update(c);  // ← update
+            cdata.getCustomer().update(c);  
         }
         
-        // تحديث المخزون - استخدام inOrdertraverseData
         if (!orderToCancel.getProducts().empty()) {
             LinkedList<Integer> productList = orderToCancel.getProducts().inOrdertraverseData();
             
@@ -630,7 +629,6 @@ private static void cancelAnOrder() {
     }
 }
 
-// ✅ المصحح للـ AVL Tree
 public static void placeNewOrder() {
     Order newOrder = new Order();
     double totalAmount = 0;
@@ -659,15 +657,14 @@ public static void placeNewOrder() {
         System.out.print("Product ID: ");
         int productId = input.nextInt();
         
-        // التحقق من المنتج
         while (true) {
-            if (!pdata.getproductsIDs() .find(productId)) {
+            if (!pdata.getproductsIDs().find(productId)) {
                 System.out.print("Invalid Product ID. Enter again: ");
                 productId = input.nextInt();
                 continue;
             }
             
-            Product p = pdata.getproductsIDs() .retrieve();
+            Product p = pdata.getproductsIDs().retrieve();
             if (p.getStock() == 0) {
                 System.out.println("This product is out of stock!");
                 System.out.print("Enter another Product ID: ");
@@ -675,22 +672,14 @@ public static void placeNewOrder() {
                 continue;
             }
             
-            break;
-        }
-        
-        // إضافة المنتج
-        if (pdata.getproductsIDs() .find(productId)) {
-            Product p = pdata.getproductsIDs() .retrieve();
+            p.setStock(p.getStock() - 1);
+            pdata.getproductsIDs().update(p);
             
-            if (p.getStock() > 0) {
-                p.setStock(p.getStock() - 1);
-                pdata.getproductsIDs() .update(p);  // ← update
-                
-                newOrder.addProduct(productId);
-                totalAmount += p.getPrice();
-                
-                System.out.println("Product included");
-            }
+            newOrder.addProduct(productId);
+            totalAmount += p.getPrice();
+            
+            System.out.println("Product included");
+            break;
         }
         
         System.out.print("Add more? (Y/N): ");
@@ -724,21 +713,21 @@ public static void placeNewOrder() {
     }
     newOrder.setStatus(statusInput);
     
-    // إضافة الطلب - معاملين!
     odata.getordersData().insert(id, newOrder);
     
-    // تحديث العميل
-    if (!cdata.check(customerId)) {
-        Customer c = cdata.getCustomer().retrieve();
-        c.PlaceNew(id);
-        cdata.getCustomer().update(c);  // ← update
+    if (!cdata.check(customerId)) {  
+        AVLTree<Integer, Customer> custTree = cdata.getCustomer();
+        
+        if (custTree.find(customerId)) { 
+            Customer c = custTree.retrieve();
+            c.PlaceNew(id);
+            custTree.update(c);
+        }
     }
     
     System.out.println("\nOrder added successfully");
     System.out.println(newOrder);
 }
-
-// ✅ صح
 private static void updateOrderStatus() {
     System.out.print("\n→ Enter Order ID: ");
     int orderId = input.nextInt();
@@ -752,7 +741,7 @@ private static void updateOrderStatus() {
     }
 }
 
-// ✅ المصحح
+
 private static void findOrdersInDateRange() {
     System.out.println("\nDate Format: dd/MM/yyyy");
     
@@ -763,17 +752,7 @@ private static void findOrdersInDateRange() {
     String endDate = input.next();
     
     try {
-        System.out.println("\n" + "─".repeat(50));
-        System.out.println("Orders from " + startDate + " to " + endDate + ":");
-        System.out.println("─".repeat(50));
-        
-        AVLTree<Date, Order> filteredOrders = odata.BetweenTwoDates(startDate, endDate);
-        
-        if (filteredOrders.empty()) {
-            System.out.println("No orders found in this date range.");
-        }
-        
-        System.out.println("─".repeat(50));
+        odata.BetweenTwoDates(startDate, endDate); // 🎯 بس كول بسيط
         
     } catch (Exception e) {
         System.out.println("Invalid date format. Please use dd/MM/yyyy");

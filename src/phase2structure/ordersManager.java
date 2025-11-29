@@ -85,36 +85,30 @@ public class ordersManager {
     
     //==============================================================
 public boolean UpdateOrder(int orderID) {
-    // البحث عن الطلب في الشجرة باستخدام المفتاح (orderID)
     if (!orders.find(orderID)) {
         System.out.println("Invalid order ID");
         return false;
     }
     
-    // استرجاع بيانات الطلب
     Order obj = orders.retrieve();
     
-    // التحقق من حالة الطلب
     if (obj.getStatus().compareToIgnoreCase("cancelled") == 0) {
         System.out.println("Cannot update status for cancelled orders");
         return false;
     }
     
-    // عرض الحالة الحالية وطلب الحالة الجديدة
     System.out.println("Status of order is " + obj.getStatus());
     System.out.print("Please enter new status (pending/shipped/delivered/cancelled): ");
     String str = input.next().toLowerCase();
     
-    // التحقق من صحة الحالة المدخلة
     while (!str.equals("pending") && !str.equals("shipped") && 
            !str.equals("delivered") && !str.equals("cancelled")) {
         System.out.print("Invalid status. Enter (pending/shipped/delivered/cancelled): ");
         str = input.next().toLowerCase();
     }
     
-    // تحديث الحالة
-    obj.setStatus(str); // أو obj.status = str;
-    orders.update(obj); // تحديث البيانات في الشجرة
+    obj.setStatus(str);
+    orders.update(obj); 
     
     return true;
 }
@@ -134,10 +128,8 @@ public boolean UpdateOrder(int orderID) {
     LocalDate Ldate1 = LocalDate.parse(date1, formatter);
     LocalDate Ldate2 = LocalDate.parse(date2, formatter);
     
-    // استخدام الـ method الجاهزة للبحث بين التاريخين
     AVLTree<Date, Order> ordersbetweenDates = orders.intervalSearchDate(Ldate1, Ldate2);
     
-    // طباعة النتائج
     if (!ordersbetweenDates.empty()) {
         System.out.println("Orders between " + date1 + " and " + date2 + ":");
         System.out.println("=".repeat(50));
