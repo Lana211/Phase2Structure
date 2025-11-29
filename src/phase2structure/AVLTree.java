@@ -15,18 +15,15 @@ import java.util.NoSuchElementException;
 
 public class AVLTree<K extends Comparable<K>, T>{
 
-        /*==================================================================
-            class BSTMapNode
-        ==================================================================*/
         class AVLNode<K extends Comparable<K>, T> {
                 public K key;
                 public T data;
-                AVLNode<K,T> parent; // pointer to the parent
-                AVLNode<K,T> left; // pointer to left child
-                AVLNode<K,T> right; // pointer to right child
-                int bf; // balance factor of the node
+                AVLNode<K,T> parent; 
+                AVLNode<K,T> left; 
+                AVLNode<K,T> right;
+                int bf; 
 
-                    /** Creates a new instance of BTNode */
+                 
                     public AVLNode() {
                             this.key = null;  
                             this.data = null;
@@ -90,14 +87,13 @@ public class AVLTree<K extends Comparable<K>, T>{
         }
 
 
-         // Removes all elements in the map.
         public void clear()
         {
             root = curr = null;
             count = 0;
         }
 
-        // Return the key and data of the current element
+      
         public T retrieve()
         {
             T data =null;
@@ -106,7 +102,7 @@ public class AVLTree<K extends Comparable<K>, T>{
             return data;
         }
 
-        // Update the data of current element.
+      
         public void update(T e)
         {
             if (curr != null)
@@ -331,6 +327,7 @@ public class AVLTree<K extends Comparable<K>, T>{
         return false;
     }
     
+    // print In Order 
 public void displayAll() {
     displayInOrder(root);
 }
@@ -342,9 +339,18 @@ private void displayInOrder( AVLNode node) {
         displayInOrder(node.right);
     }
 }
-    //==============================================================
-    // return string all data of the tree inorder traversal
-    //==============================================================
+
+public String toStringInOrder() {
+  return InOrder(root);
+}
+
+private String InOrder( AVLNode node) {
+    if (node == null) 
+        return "";
+   
+    return  InOrder(node.left) + node.data + " " + InOrder(node.right);
+}
+ 
     
    //==============================================================
 // return string all data of the tree inorder traversal

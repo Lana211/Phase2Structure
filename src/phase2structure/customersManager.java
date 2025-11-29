@@ -14,8 +14,7 @@ public class customersManager {
    
     public static Scanner input = new Scanner(System.in);
     public static AVLTree<Integer,Customer> customer = new AVLTree<Integer,Customer>();
-    //list by name
-   public static AVLTree<String, Customer> customersName = new AVLTree<String, Customer> ();
+    public static AVLTree<String, Customer> customersName = new AVLTree<String, Customer> ();
     public customersManager(String readFile) {
         try {
             File custmerFile = new File(readFile);
@@ -61,7 +60,7 @@ customers.setCustomerID(customerID);
    customers.setEmail(email);
    
     customer.insert(customers.getCustomerID(),customers);
-     customersName.insert( customers.getName(),customers);
+     customersName.insert( customers.name ,customers);
      System.out.println("Customer has been added successfully");  
 }
 
@@ -86,7 +85,7 @@ customers.setCustomerID(customerID);
           System.out.println("no order yet");
           return;
       }
- 
+  System.out.println("Orders:");
   order.displayAll();
  
     }
@@ -119,26 +118,40 @@ customers.setCustomerID(customerID);
         System.out.println("No customers available");
         return null;
     }
- //System.out.println("enter customer ID");
+
     while (true) {
        
         int customerID = input.nextInt();
          
             if (customer.find(customerID)) {
-               // System.out.println(customer.retrieve());
                 return customer.retrieve();
             }
 
          System.out.println("Customer not found, please enter a valid ID:");
         }
-    
-    
-
-      
-        
-       
+         
 }
+   public Customer SerchCustomerID() {
 
+   
+    if (customer.empty()) {
+        System.out.println("No customers available");
+        return null;
+    }
+ System.out.println("enter customer ID");
+    while (true) {
+       
+        int customerID = input.nextInt();
+         
+            if (customer.find(customerID)) {
+               System.out.println(customer.retrieve());
+                return customer.retrieve();
+            }
+
+         System.out.println("Customer not found, please enter a valid ID:");
+        }
+         
+}
     public static AVLTree<Integer, Customer> getCustomer() {
         return customer;
     }

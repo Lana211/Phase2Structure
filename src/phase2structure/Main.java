@@ -792,7 +792,7 @@ private static void findOrdersInDateRange() {
     System.out.println("5. View customer reviews");
     System.out.println("6.Display All Customer Ordered by name");
     System.out.println("7.Display All Customer Ordered by ID");
-    System.out.println("5. Return to Main Menu");
+    System.out.println("8. Return to Main Menu");
     System.out.print("Enter your choice: ");
 
     try {
@@ -804,7 +804,7 @@ private static void findOrdersInDateRange() {
                cdata.RegisterNewCustomer();
                 break;
             } else if (choice == 2) {
-               cdata. getCustomersId();
+               cdata.SerchCustomerID();
                 break;
              } else if (choice == 3) {
                 placeNewOrder();
