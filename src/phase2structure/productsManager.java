@@ -126,7 +126,7 @@ public class productsManager {
             return p;
         }
 
-        System.out.println("No such product ID.");
+        System.out.println("No product found with the given ID.");
         return null;
     }
 

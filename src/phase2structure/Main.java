@@ -86,9 +86,9 @@ public class Main {
                     Product pro = pdata.searchProducID();
                     if (pro != null) {
                         System.out.println("Product found: " + pro);
-                    } else {
+                    }/* else {
                         System.out.println("No product found with the given ID.");
-                    }
+                    }*/
                     break;
                 } else if (choice == 5) {
 
@@ -102,19 +102,27 @@ public class Main {
                     pdata.Out_Of_Stock_Products();
                     break;
                 } else if (choice == 7) {
-                    double minPrice, maxPrice;
-
+                    double minPrice = -1, maxPrice = -1; 
                     do {
                         System.out.println("Enter range :");
                         System.out.print("minPrice : ");
                         minPrice = input.nextDouble();
+                        if (minPrice < 0) {
+                            System.out.println("Price cannot be negative. Please enter a valid minPrice.");
+                            continue;
+                        }
+
                         System.out.print("maxPrice : ");
                         maxPrice = input.nextDouble();
+                        if (maxPrice < 0) {
+                            System.out.println("Price cannot be negative. Please enter a valid maxPrice.");
+                            continue;
+                        }
 
                         if (minPrice >= maxPrice) {
                             System.out.println("Re-enter range [minPrice less than maxPrice] :");
                         }
-                    } while (minPrice >= maxPrice);
+                    } while (minPrice < 0 || maxPrice < 0 || minPrice >= maxPrice);  
 
                     LinkedList<Product> data = pdata.getPriceRange(minPrice, maxPrice);
 
@@ -125,7 +133,6 @@ public class Main {
                     }
 
                     break;
-
                 } else if (choice == 8) {
                     System.out.println("Returning to main menu...");
                     return;
@@ -616,7 +623,7 @@ private static void cancelAnOrder() {
                 productList.findNext();
             }
             
-            // العنصر الأخير
+            
             int lastProductId = productList.retrieve();
             if (pdata.getproductsIDs() .find(lastProductId)) {
                 Product p = pdata.getproductsIDs() .retrieve();
