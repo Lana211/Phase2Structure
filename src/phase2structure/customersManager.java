@@ -86,7 +86,7 @@ customers.setCustomerID(customerID);
           return;
       }
   System.out.println("Orders:");
-  order.displayAll();
+  order.printData();
  
     }
 
@@ -101,11 +101,11 @@ customers.setCustomerID(customerID);
     }
     
     public void ListCustomerByName(){
-      customersName.displayAll();
+      customersName.printData();
            
     }
     public void ListCustomerByID(){
-      customer.displayAll();
+      customer.printData();
            
     }
   

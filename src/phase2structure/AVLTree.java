@@ -326,31 +326,7 @@ public class AVLTree<K extends Comparable<K>, T>{
         return false;
     }
     
-    // print In Order 
-public void displayAll() {
-    displayInOrder(root);
-}
 
-private void displayInOrder( AVLNode node) {
-    if (node != null) {
-        displayInOrder(node.left);
-        System.out.println(node.data);
-        displayInOrder(node.right);
-    }
-}
-
-public String toStringInOrder() {
-  return InOrder(root);
-}
-
-private String InOrder( AVLNode node) {
-    if (node == null) 
-        return "";
-   
-    return  InOrder(node.left) + node.data + " " + InOrder(node.right);
-}
- 
-    
    //==============================================================
 // return string all data of the tree inorder traversal
 //==============================================================
