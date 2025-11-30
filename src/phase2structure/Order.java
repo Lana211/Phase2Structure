@@ -109,7 +109,6 @@ public class Order {
             + ", date=" + date;
     
     if (!products.empty()) {
-        // استخدام toString() من AVL Tree مباشرة
         str += " (products: " + products.toString() + ")";
     }
     

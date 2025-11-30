@@ -111,7 +111,6 @@ public class AVLTree<K extends Comparable<K>, T>{
 
         //searches for the key in the AVL, returns the data or null (if not found).
         private T searchTreeHelper(AVLNode<K,T> node, K key) {
-                   // Place your code here\\
                     if (node == null)
                         return null;
                     else if (node.key.compareTo(key) ==0) 
@@ -583,32 +582,5 @@ private int private_inOrdertraverseOutStock(AVLNode<K, T> node, int count) {
          }
     }   
     
-    //==============================================================
-    /*public void LoadToFile ( String fileName)
-    {
-        
-        try {
-                FileWriter myWriter = new FileWriter(fileName);
-                private_LoadToFile ( myWriter, root);
-                myWriter.close();
-
-        } catch(IOException ex){
-                     System.out.println(ex.getMessage());
-        } 
-
-    }
-    /*private void private_LoadToFile ( FileWriter myWriter,  AVLNode <K, T>  node) throws IOException
-    {
-        if ( node == null)
-            return;
-        private_LoadToFile ( myWriter,  node.left);
-        if (node.data instanceof Customer)
-            myWriter.write(((Customer) node.data).getDataToFile() +"\n");
-        if (node.data instanceof Order)
-            myWriter.write(((Order) node.data).getDataToFile() +"\n");
-        if (node.data instanceof Product)
-            myWriter.write(((Product) node.data).getDataToFile() +"\n");
-        private_LoadToFile ( myWriter,  node.right);
-        
-    }   */ 
+    
 }

@@ -143,27 +143,5 @@ public class LinkedList<T>{
         System.out.println("");
     }
     //==============================================================
-   /* public void LoadToFile ( String fileName)
-    {
-        
-        try {
-                FileWriter myWriter = new FileWriter(fileName);
-                
-                Node<T> tmp = head;
-     
-                while (tmp != null)
-                {
-                    if (tmp.data instanceof Review)
-                        myWriter.write(((Review) tmp.data).getDataToFile() +"\n");
-                    
-                    tmp = tmp.next;
-                }
-                
-                myWriter.close();
-
-        } catch(IOException ex){
-                     System.out.println(ex.getMessage());
-        } 
-
-    }*/
+   
 }

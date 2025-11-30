@@ -48,7 +48,7 @@ public class LinkedPQ<T> {
     private PQNode<T> head;
 
 
-    /* tail is of no use here. */
+  
     public LinkedPQ() {
             head = null;
             size = 0;
